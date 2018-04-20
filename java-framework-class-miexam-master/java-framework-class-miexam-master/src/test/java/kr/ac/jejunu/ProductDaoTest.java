@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 
+
+//9번과 10번 같이 한줄알았으나 착각이 였습니다.
 public class ProductDaoTest {
     private ProductDao productDao;
 
@@ -75,4 +77,3 @@ public class ProductDaoTest {
     }
 
 }
-// 9번 10번 함께해버림.
