@@ -17,7 +17,7 @@ public class ProductDaoTest {
     @Before
     public void setup() {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
-        productDao = applicationContext.getBean("getProductDao", ProductDao.class);
+        productDao = applicationContext.getBean("productDao", ProductDao.class);
     }
 
     @Test
