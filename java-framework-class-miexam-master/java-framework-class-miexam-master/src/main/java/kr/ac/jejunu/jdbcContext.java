@@ -3,10 +3,10 @@ package kr.ac.jejunu;
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class jdbcContext {
+public class JdbcContext {
     DataSource dataSource;
 
-    public jdbcContext() {
+    public JdbcContext(DataSource dataSource) {
     }
 
     Product GetForProduct(StatementStrategy statementStrategy) throws SQLException {
