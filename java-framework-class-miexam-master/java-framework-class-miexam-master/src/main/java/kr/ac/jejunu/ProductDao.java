@@ -4,147 +4,27 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 public class ProductDao {
-    private final DataSource dataSource;
+    private final kr.ac.jejunu.jdbcContext jdbcContext = new jdbcContext();
 
     public ProductDao(DataSource dataSource){
-        this.dataSource = dataSource;
+        this.jdbcContext.dataSource = dataSource;
     }
 
     public Product get(Long id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Product product = null;
-        try {
-            connection = dataSource.getConnection();
             StatementStrategy statementStrategy = new GetStatementStrategy(id);
-            preparedStatement = statementStrategy.makeStatement(connection);
-
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                product = new Product();
-                product.setId(resultSet.getLong("id"));
-                product.setTitle(resultSet.getString("title"));
-                product.setPrice(resultSet.getInt("price"));
-            }
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return product;
+        return jdbcContext.GetForProduct(statementStrategy);
     }
-
-
     public Long insert(Product product) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Long id;
-        try {
-            connection = dataSource.getConnection();
-            StatementStrategy statementStrategy = new InsertProductStatementStrategy(product);
-            preparedStatement = statementStrategy.makeStatement(connection);
-
-            resultSet = preparedStatement.getGeneratedKeys();
-            resultSet.next();
-
-            id = resultSet.getLong(1);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return id;
+        StatementStrategy statementStrategy = new InsertProductStatementStrategy(product);
+        return jdbcContext.insertForProduct(statementStrategy);
     }
-
     public Product update(Product product) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            StatementStrategy statementStrategy = new UpdateProductStatmentStrategy(product);
-            preparedStatement = statementStrategy.makeStatement(connection);
-
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        StatementStrategy statementStrategy = new UpdateProductStatmentStrategy(product);
+        jdbcContext.updateForProduct(statementStrategy);
         return product;
     }
-
-
     public void delete(Long id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            StatementStrategy statementStrategy = new DeleteProductStatementStratrgy(id);
-            preparedStatement = statementStrategy.makeStatement(connection);
-
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        StatementStrategy statementStrategy = new DeleteProductStatementStratrgy(id);
+        jdbcContext.updateForProduct(statementStrategy);
     }
 }

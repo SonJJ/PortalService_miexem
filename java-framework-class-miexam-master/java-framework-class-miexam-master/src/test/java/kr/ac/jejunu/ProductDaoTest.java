@@ -23,7 +23,7 @@ public class ProductDaoTest {
     }
 
     @Test
-    public void get() throws SQLException, ClassNotFoundException {
+    public void get() throws SQLException {
         Long id = 1L;
         String title = "제주감귤";
         Integer price = 15000;
